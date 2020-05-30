@@ -1,8 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- <div class='container'> -->
-        <div class='row'>
-
+<div class='row mb-3'>
+    {% if query %}
+    <div class='col-12'>
+        Search for <b>{{query}}</b>
+        <hr/>
+    </div>
+    {% else %}
+    <div class='col-12 col-md-6 mx-auto py-5'>
+        {% include 'search/snippets/search-form.html' %}
+    </div>
+    <div class='col-12'>
+        <hr>
+    </div>
+    {% endif %}
+</div>
+    <!-- <div class='container'> -->   
+    <div class='row'>
+    <!-- {% if obj == None %}   
+        <h5>No results found</h5>
+    {% endif %} -->
     {% for obj in object_list %}
     <div class='col'>
         <!-- {{ forloop.counter}}    Product count will be displayed  -->
@@ -14,6 +31,6 @@
     </div>
     {% endif %}
     {% endfor %}
-    </div>
+    <!-- </div> -->
     <!-- </div> -->
 {% endblock %}
