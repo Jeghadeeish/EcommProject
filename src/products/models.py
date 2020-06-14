@@ -1,7 +1,8 @@
 from django.db import models
 import random
 import os
-from products.utils import unique_slug_generator
+# from products.utils import unique_slug_generator
+from ecommerce.utils import unique_slug_generator
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.db.models import Q
@@ -47,6 +48,7 @@ class ProductManager(models.Manager):
     def get_by_id(self, id):
         #return self.get_queryset().filter(id=id) # Product.objects == self.get_queryset()
         qs = self.get_queryset().filter(id=id)
+        print("product qs:",qs)
         if qs.count() == 1:
             return qs.first()
         return None
@@ -76,6 +78,10 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     def __unicode__(self):
+        return self.title
+    
+    @property
+    def name(self):     # It's like an alias column name 
         return self.title
     
 def product_pre_save_receiver(sender, instance, *args, **kwargs):

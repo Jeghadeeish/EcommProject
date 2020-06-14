@@ -20,8 +20,14 @@ from django.contrib import admin
 from django.urls import path,include
 from django.views.generic import TemplateView
 
+from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 #from .views import home_page
+from accounts.views import login_page, register_page, guest_register_view
 from . import views
+
+from django.contrib.auth.views import LogoutView
+from carts.views import cart_detail_api_view
+
 # from products.views import (
 #         ProductListView, 
 #         product_list_view, 
@@ -38,11 +44,20 @@ urlpatterns = [
     path('',views.home_page,name='home'),
     path('about/',views.about_page,name='about'),
     path('contact/',views.contact_page,name='contact'),
-    path('login/',views.login_page,name='login'),
-    path('register/',views.register_page,name='register'),
+    # path('login/',views.login_page,name='login'),
+    # path('register/',views.register_page,name='register'),
+    path('login/',login_page,name='login'),
+    path('logout/',LogoutView.as_view(),name='logout'),
+    path('register/',register_page,name='register'),
+    path('register/guest',guest_register_view,name='guest_register'),
     path('bootstrap/',TemplateView.as_view(template_name='bootstrap/example.html')),
     path('products/',include('products.urls',namespace='products')),
     path('search/',include('search.urls',namespace='search')),
+    path('checkout/address/create',checkout_address_create_view, name='checkout_address_create'),
+    path('checkout/address/reuse',checkout_address_reuse_view, name='checkout_address_reuse'),
+    # path('cart/',cart_home, name='cart'),
+    path('cart/',include('carts.urls',namespace='cart')),
+    path('api/cart/',cart_detail_api_view, name='api-cart'),
     # path('featured/',ProductFeaturedListView.as_view()),
     # path('featured/<int:pk>/',ProductFeaturedDetailView.as_view()),
     # path('products/',ProductListView.as_view()),
