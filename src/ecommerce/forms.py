@@ -20,7 +20,7 @@ class ContactForm(forms.Form):
             )
         )
     content = forms.CharField(
-        widget=forms.TextInput(
+        widget=forms.Textarea(
                 attrs={
                     'class': "form-control",
                     "placeholder":"Your message"

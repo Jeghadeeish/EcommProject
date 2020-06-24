@@ -44,6 +44,7 @@ def cart_update(request):
     
     if product_id is not None:
         try:
+            print("product_id",product_id)
             product_obj = Product.objects.get(id=product_id)
         except Product.DoesNotExists:
             print("Show message to user, product is gone?")
@@ -66,7 +67,8 @@ def cart_update(request):
                 "removed": not added,
                 "cartItemCount": cart_obj.products.count(),
             }
-            return JsonResponse(json_data)
+            return JsonResponse(json_data, status=200)
+            # return JsonResponse({'message':'error 400'}, status=400)
     return redirect("cart:home")
 
 def checkout_home(request):

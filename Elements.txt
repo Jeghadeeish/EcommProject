@@ -7,8 +7,85 @@ https://docs.djangoproject.com/en/3.0/topics/auth/default/#django.contrib.auth.l
 
 https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+For Icons:
+=============================
+https://fontawesome.com/?from=io
+https://www.bootstrapcdn.com/fontawesome/
 
+https://jquery.com/
+http://code.jquery.com/
+http://code.jquery.com/jquery-3.5.1.min.js
 
+User Model:
+========================================
+https://www.codingforentrepreneurs.com/blog/how-to-create-a-custom-django-user-model/
 card.html
 
+https://www.codingforentrepreneurs.com/blog/custom-analytics-with-django/#watch
+
         <!-- <a href="{% url 'products:detail' slug=instance.slug %}" class='btn btn-warning'>URL shortcut</a> -->
+
+cart:
+# def cart_create(user=None):
+#     cart_obj = Cart.objects.create(user=None)
+#     print("New Cart Created")
+#     return cart_obj
+
+
+# # request.session['first_name'] = 'Jeghadeeish'   # setter - set
+    # # print(request.session['cart_id'])
+    # # del request.session["cart_id"]
+    # # request.session['cart_id'] = "12"
+    # cart_id = request.session.get("cart_id", None)  # Here None is default value
+    # # if cart_id is None: # and isinstance(cart_id, int):
+    # #     cart_obj = Cart.objects.create(user=None)
+    # #     request.session["cart_id"] = cart_obj.id
+    # #     print("New Cart created")
+    # #     # print("create new cart")
+    # #     # request.session["cart_id"] = 12
+    # # else:
+    # #     print("Cart ID exists")
+    # #     print(cart_id)
+    # #     cart_obj = Cart.objects.get(id=cart_id)
+    # # request.session['user'] = request.user.username
+    # qs = Cart.objects.filter(id=cart_id)
+    # if qs.count() == 1:
+    #     print("Card ID exists")
+    #     cart_obj = qs.first()
+    #     if request.user.is_authenticated and cart_obj.user is None:
+    #         cart_obj.user = request.user
+    #         cart_obj.save()
+
+    # else:
+    #     # cart_obj = cart_create()
+    #     cart_obj = Cart.objects.new(user=request.user)
+    #     request.session["cart_id"] = cart_obj.id
+
+
+class CartManager(models.Manager):
+    def new_or_get(self, request):
+        print("request:", request.user)
+        cart_id = request.session.get("cart_id", None)  
+        qs = self.get_queryset().filter(id=cart_id)
+        if qs.count() == 1:
+            new_obj = False
+            # cart_obj = qs.first()
+            cart_obj = qs.get()
+            print(cart_obj)
+            print(qs)
+            if request.user.is_authenticated and cart_obj.user is None:
+                cart_obj.user = request.user
+                cart_obj.save()
+        else:
+            cart_obj = Cart.objects.new(user=request.user)
+            new_obj = True
+            request.session["cart_id"] = cart_obj.id
+        return cart_obj, new_obj
+
+    def new(self, user=None):
+        print(user)
+        user_obj = None
+        if user is not None:
+            if user.is_authenticated:
+                user_obj = user
+        return self.model.objects.create(user=user_obj)

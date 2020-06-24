@@ -8,9 +8,9 @@
 <div class='container'>
   <div class='row'>
       <div class='col'>
+        <div class='col-md-6 col-12 mx-auto'>
           <p>{{ content }}</p>
-        <div class='col-sm-6 col-12'>
-          <form method="POST"> {% csrf_token %}  <!--default method is GET -->
+          <form class='contact-form' method="POST" action='{% url "contact" %}'> {% csrf_token %}  <!--default method is GET -->
             {{ form }}
               <!-- <input type="text" class="form-control" placeholder="Name" name="fullname">   
               #here if you give value=name then text box has a value fullname -->

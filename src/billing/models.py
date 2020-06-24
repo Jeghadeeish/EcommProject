@@ -33,10 +33,11 @@ class BillingProfile(models.Model):
     timestamp   = models.DateTimeField(auto_now_add=True)
     # customer_id in Stripe or Braintree
 
+    objects = BillingProfileManager()
+
     def __str__(self):
         return self.email
 
-    objects = BillingProfileManager()
 
 # def billing_profile_created_receiver(sender,instance, created, *args, **kwargs):
 #     if created:
@@ -46,6 +47,7 @@ class BillingProfile(models.Model):
 
 def user_created_receiver(sender, instance, created, *args, **kwargs):
     if created and instance.email: 
+        print("instance",instance)
         BillingProfile.objects.get_or_create(user=instance,email=instance.email)
 
     
